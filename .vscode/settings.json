@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.py": "python",
+        "cmath": "c",
+        "sdl.h": "c",
+        "math.h": "c",
+        "cube.h": "c",
+        "2dscreen.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
