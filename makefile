@@ -1,8 +1,12 @@
-CC=gcc  #compiler
-TARGET=main #target file name
- 
-all:
-    $(CC) main.c cube.c matrix.c 2dscreen.c -o $(TARGET)
- 
-clean:
-    rm $(TARGET)
+
+
+
+
+
+all:#ca marche
+	gcc main.c libs/*.c -o main -lmingw32 -lSDL2main -lSDL2
+	./main
+
+
+clean:#ca marcche pas 
+	rm -f main.exe

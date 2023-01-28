@@ -11,7 +11,7 @@ SDL_Renderer*RENDERER;
 SDL_Window* window;
 
 
-int main(int argc, char* argv[]) {
+int WinMain(int argc, char* argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
 
     screen window=new_screen("hi",20,20,WIDTH,HEIGHT,0);
@@ -48,23 +48,32 @@ int main(int argc, char* argv[]) {
                     break;
             }
         }
-        //cube c =new_cube(10,10,20,10,255,0,255,255,0,0,0);
-        //cube c2 =new_cube(10,11,20,10,255,0,255,255,0,0,0);
-        //draw_cube(c,window);
-        //draw_cube(c2,window);
-        //for(int i=0;i<20;i++){
-        //    for(int k=0;k<20;k++){
-        //        draw_cube(new_cube(i,k,10,10,255/20*i,0,255-255/20*k,255,0,0,0),window);
-        //    }
+        cube c =new_cube(10,10,20,10,255,0,255,255,0,0,0);
+        cube c2 =new_cube(10,11,20,10,255,0,255,255,0,0,0);
+        draw_cube(c,window);
+        draw_cube(c2,window);
+        for(int i=0;i<20;i++){
+            for(int k=0;k<20;k++){
+                draw_cube(new_cube(i,k,10,10,255/20*i,0,255-255/20*k,255,0,0,0),window);
+            }
+        }
+
+        //ca  ca marche pas 
+        //for(int i=0;i<4;i++){
+        //    for(int u=0;i<4;u++){
+        //        for(int y=0;y<4;y++){
+        //            draw_cube(new_cube(i,u,y+10,10,0,0,255,255,0,0,0),window);
+        //        }
+        //    } 
         //}
         draw_cube(new_cube(0,0,10,10,0,255,0,0,0,0+k,0+j),window);
         update_screen(window);
         Uint32 delay=SDL_GetTicks()-t;
         char*ti=malloc(sizeof(char)*4);
-        k+=0.1;
-        j+=0.024;
+        k+=0.01;
+        j+=0.0024;
 
-        snprintf(ti,sizeof(int32_t),"%d",SDL_GetTicks()-t);
+        snprintf(ti,sizeof(int32_t),"%d",(int)1000*(SDL_GetTicks()-t));
         SDL_SetWindowTitle(window.window,ti);
     }
     return 0;
