@@ -13,7 +13,10 @@ cube new_cube(int x,int y,int z,int size,uint8_t r,uint8_t g,uint8_t b,uint8_t a
 }
 float POS=0;
 float POSy=0;
+float POSz=0;
 int SIZE=1;
+float vecx=0;
+float vecz=100;
 
 void draw_cube(cube c,screen s){
     float l[][3]={
@@ -49,7 +52,7 @@ void draw_cube(cube c,screen s){
     //}
     int FUITE=100;
     for(int i=0;i<8;i++){
-      float*proj= project_point(l[i][0],l[i][1],l[i][2],0+POS,0+POSy,0,0,0,100);
+      float*proj= project_point(l[i][0],l[i][1],l[i][2],0+POS,0+POSy,0+POSz,vecx,0,vecz);
         l[i][0]=proj[0]*c.size*SIZE;
         l[i][1]=proj[1]*c.size*SIZE;
         free(proj);

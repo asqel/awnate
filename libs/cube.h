@@ -23,7 +23,10 @@ typedef struct cube{
 cube new_cube(int x,int y,int z,int size,uint8_t r,uint8_t g,uint8_t b,uint8_t a,float rotx,float roty,float rotz);
 extern float POS;
 extern float POSy;
+extern float POSz;
 extern int SIZE;
+extern float vecx;
+extern float vecz;
 
 void draw_cube(cube c,screen s);
 

@@ -10,6 +10,7 @@ const int FPS = 2000;
 SDL_Renderer*RENDERER;
 SDL_Window* window;
 
+float rotspeed=0.1;
 
 int WinMain(int argc, char* argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -38,12 +39,27 @@ int WinMain(int argc, char* argv[]) {
                         POS+=0.02;
                     }
                     if(event.key.keysym.sym==SDLK_z){
-                        POSy-=0.02;
+                        POSz+=0.02;
                     }
                     if(event.key.keysym.sym==SDLK_s){
+                        POSz-=0.02;
+                    }
+                    if(event.key.keysym.sym==SDLK_LSHIFT){
                         POSy+=0.02;
                     }
-
+                    if(event.key.keysym.sym==SDLK_SPACE){
+                        POSy-=0.02;
+                    }
+                    if(event.key.keysym.sym==SDLK_LEFT){
+                        vecx=vecx*cos(rotspeed)-vecz*sin(rotspeed);
+                        vecz=vecx*sin(rotspeed)+vecz*cos(rotspeed);
+                        printf("%f %f\n",vecx,vecz);
+                    }
+                    if(event.key.keysym.sym==SDLK_RIGHT){
+                        vecx=vecx*cos(-rotspeed)-vecz*sin(-rotspeed);
+                        vecz=vecx*sin(-rotspeed)+vecz*cos(-rotspeed);    
+                        printf("%f %f\n",vecx,vecz);
+                    }
                 default:
                     break;
             }
@@ -52,11 +68,11 @@ int WinMain(int argc, char* argv[]) {
         cube c2 =new_cube(10,11,20,10,255,0,255,255,0,0,0);
         draw_cube(c,window);
         draw_cube(c2,window);
-        for(int i=0;i<20;i++){
-            for(int k=0;k<20;k++){
-                draw_cube(new_cube(i,k,10,10,255/20*i,0,255-255/20*k,255,0,0,0),window);
-            }
-        }
+        //for(int i=0;i<20;i++){
+        //    for(int k=0;k<20;k++){
+        //        draw_cube(new_cube(i,k,10,10,255/20*i,0,255-255/20*k,255,0,0,0),window);
+        //    }
+        //}
 
         //ca  ca marche pas 
         //for(int i=0;i<4;i++){
