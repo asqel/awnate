@@ -52,10 +52,12 @@ void draw_cube(cube c,screen s){
     //}
     int FUITE=100;
     for(int i=0;i<8;i++){
-      float*proj= project_point(l[i][0],l[i][1],l[i][2],0+POS,0+POSy,0+POSz,vecx,0,vecz);
-        l[i][0]=proj[0]*c.size*SIZE;
-        l[i][1]=proj[1]*c.size*SIZE;
-        free(proj);
+        if(1/*isvisible(l[i][0],l[i][1],l[i][2],0+POS,0+POSy,0+POSz,vecx,0,vecz)*/){
+            float*proj= project_point(l[i][0],l[i][1],l[i][2],0+POS,0+POSy,0+POSz,vecx,0,vecz);
+            l[i][0]=proj[0]*c.size*SIZE;
+            l[i][1]=proj[1]*c.size*SIZE;
+            free(proj);
+        }
     }
     
     //face avant haut gauche
@@ -64,7 +66,7 @@ void draw_cube(cube c,screen s){
     draw_triangle(s,l[0][0]+s.w/2,l[0][1]+s.h/2,l[3][0]+s.w/2,l[3][1]+s.h/2,l[2][0]+s.w/2,l[2][1]+s.h/2,c.color[0],c.color[1],c.color[2],c.color[3]);
 
     draw_triangle(s,l[1][0]+s.w/2,l[1][1]+s.h/2,l[5][0]+s.w/2,l[5][1]+s.h/2,l[6][0]+s.w/2,l[6][1]+s.h/2,c.color[0],c.color[1],c.color[2],c.color[3]);
-    draw_triangle(s,l[6][0]+s.w/2,l[1][1]+s.h/2,l[2][0]+s.w/2,l[2][1]+s.h/2,l[1][0]+s.w/2,l[1][1]+s.h/2,c.color[0],c.color[1],c.color[2],c.color[3]);
+    draw_triangle(s,l[4][0]+s.w/2,l[4][1]+s.h/2,l[5][0]+s.w/2,l[5][1]+s.h/2,l[6][0]+s.w/2,l[6][1]+s.h/2,c.color[0],c.color[1],c.color[2],c.color[3]);
     draw_triangle(s,l[0][0]+s.w/2,l[0][1]+s.h/2,l[4][0]+s.w/2,l[4][1]+s.h/2,l[7][0]+s.w/2,l[7][1]+s.h/2,c.color[0],c.color[1],c.color[2],c.color[3]);
     draw_triangle(s,l[7][0]+s.w/2,l[7][1]+s.h/2,l[3][0]+s.w/2,l[3][1]+s.h/2,l[0][0]+s.w/2,l[0][1]+s.h/2,c.color[0],c.color[1],c.color[2],c.color[3]);
     draw_triangle(s,l[3][0]+s.w/2,l[3][1]+s.h/2,l[2][0]+s.w/2,l[2][1]+s.h/2,l[6][0]+s.w/2,l[6][1]+s.h/2,c.color[0],c.color[1],c.color[2],c.color[3]);

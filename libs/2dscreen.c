@@ -66,3 +66,7 @@ void draw_triangle(screen s,int x1,int y1,int x2,int y2,int x3,int y3, Uint8 r, 
     l[1]= (y-view_y)*(focus_z-view_z)/((z-view_z)+view_x*view_y)+view_y;
     return l;
 }
+
+
+
+    //fleme en fait faut faire un truc avec le projeter orthogonal au plans normal au vecteur focus et ensuite faire des produit scalaire entre le vec (x y z ) projeter ortho et focus

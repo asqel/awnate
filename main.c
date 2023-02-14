@@ -60,6 +60,12 @@ int WinMain(int argc, char* argv[]) {
                         vecz=vecx*sin(-rotspeed)+vecz*cos(-rotspeed);    
                         printf("%f %f\n",vecx,vecz);
                     }
+                    if(event.key.keysym.sym==SDLK_p){
+                        vecz-=1;
+                    }
+                    if(event.key.keysym.sym==SDLK_m){
+                        vecz+=1;
+                    }
                 default:
                     break;
             }
@@ -68,11 +74,11 @@ int WinMain(int argc, char* argv[]) {
         cube c2 =new_cube(10,11,20,10,255,0,255,255,0,0,0);
         draw_cube(c,window);
         draw_cube(c2,window);
-        //for(int i=0;i<20;i++){
-        //    for(int k=0;k<20;k++){
-        //        draw_cube(new_cube(i,k,10,10,255/20*i,0,255-255/20*k,255,0,0,0),window);
-        //    }
-        //}
+        for(int i=0;i<20;i++){
+            for(int k=0;k<20;k++){
+                draw_cube(new_cube(i,k,10,10,255/20*i,0,255-255/20*k,255,0,0+k,0+j),window);
+            }
+        }
 
         //ca  ca marche pas 
         //for(int i=0;i<4;i++){
@@ -86,10 +92,11 @@ int WinMain(int argc, char* argv[]) {
         update_screen(window);
         Uint32 delay=SDL_GetTicks()-t;
         char*ti=malloc(sizeof(char)*4);
-        k+=0.01;
-        j+=0.0024;
+        k+=0.01*10;
+        j+=0.0024*10;
 
         snprintf(ti,sizeof(int32_t),"%d",(int)1000*(SDL_GetTicks()-t));
+        free(ti);
         SDL_SetWindowTitle(window.window,ti);
     }
     return 0;
