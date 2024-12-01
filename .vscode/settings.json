@@ -5,7 +5,19 @@
         "sdl.h": "c",
         "math.h": "c",
         "cube.h": "c",
-        "2dscreen.h": "c"
+        "2dscreen.h": "c",
+        "types.h": "c",
+        "graphic.h": "c",
+        "vec_mat.h": "c",
+        "geometry.h": "c",
+        "vectors.h": "c",
+        "sdl_main.h": "c",
+        "sdl_cpuinfo.h": "c",
+        "sdl_stdinc.h": "c",
+        "sdl_config.h": "c",
+        "sdl_platform.h": "c",
+        "stdint.h": "c",
+        "cstdint": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

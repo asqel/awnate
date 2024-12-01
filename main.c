@@ -1,103 +1,86 @@
 #include <SDL2/SDL.h>
 #include <math.h>
-#include "libs/cube.h"
-#include "libs/2dscreen.h"
 
+#include "graphic.h"
+#include "geometry.h"
+#include "shapes.h"
+#include "vectors.h"
 
-const int WIDTH = 1000;
-const int HEIGHT = 800;
-const int FPS = 2000;
-SDL_Renderer*RENDERER;
-SDL_Window* window;
-
-float rotspeed=0.1;
-
-int WinMain(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    screen window=new_screen("hi",20,20,WIDTH,HEIGHT,0);
-    //float a=5.89;
-    //printf("%d",*(int*)&a);
-    //convertir jjuste le type sans changer la valeur
+    init_graphic(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    show_screen(window);
-    float k=0;
-    float j=1;
-    while(1){
-        Uint32 t=SDL_GetTicks();
+    camera_t camera;
+    camera.pos.x = 0;
+    camera.pos.y = 0;
+    camera.pos.z = -5;
+    camera.rotx = 0;
+    camera.roty = 0;
+
+    object_t cube;
+    new_cube(&cube, (vec3_t){0, 0, 0}, 1, 255, 0, 0);
+
+    int running = 1;
+    while (running) {
         SDL_Event event;
-        fill(window,0,0,0,255);
+        vec3_t looking_vector;
+        vec3_t right_vector;
+
         while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    return 0;
-                case SDL_KEYDOWN:
-                    if(event.key.keysym.sym==SDLK_q){
-                        POS-=0.02;
-                    }
-                    if(event.key.keysym.sym==SDLK_d){
-                        POS+=0.02;
-                    }
-                    if(event.key.keysym.sym==SDLK_z){
-                        POSz+=0.02;
-                    }
-                    if(event.key.keysym.sym==SDLK_s){
-                        POSz-=0.02;
-                    }
-                    if(event.key.keysym.sym==SDLK_LSHIFT){
-                        POSy+=0.02;
-                    }
-                    if(event.key.keysym.sym==SDLK_SPACE){
-                        POSy-=0.02;
-                    }
-                    if(event.key.keysym.sym==SDLK_LEFT){
-                        vecx=vecx*cos(rotspeed)-vecz*sin(rotspeed);
-                        vecz=vecx*sin(rotspeed)+vecz*cos(rotspeed);
-                        printf("%f %f\n",vecx,vecz);
-                    }
-                    if(event.key.keysym.sym==SDLK_RIGHT){
-                        vecx=vecx*cos(-rotspeed)-vecz*sin(-rotspeed);
-                        vecz=vecx*sin(-rotspeed)+vecz*cos(-rotspeed);    
-                        printf("%f %f\n",vecx,vecz);
-                    }
-                    if(event.key.keysym.sym==SDLK_p){
-                        vecz-=1;
-                    }
-                    if(event.key.keysym.sym==SDLK_m){
-                        vecz+=1;
-                    }
-                default:
+            if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
+                running = 0;
+            else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                case SDLK_SPACE:
+                    camera.pos.y += 0.2f;
                     break;
+                case SDLK_LSHIFT:
+                    camera.pos.y -= 0.2f;
+                    break;
+                case SDLK_w:
+                    looking_vector = (vec3_t){0.0f, 0.0f, 0.2f};
+                    looking_vector = rotateY(looking_vector, camera.roty);
+                    looking_vector = rotateX(looking_vector, camera.rotx);
+                    camera.pos.x += looking_vector.x;
+                    camera.pos.y += looking_vector.y;
+                    camera.pos.z += looking_vector.z;
+                    break;
+                case SDLK_s:
+                    looking_vector = (vec3_t){0.0f, 0.0f, 0.2f};
+                    looking_vector = rotateY(looking_vector, camera.roty);
+                    looking_vector = rotateX(looking_vector, camera.rotx);
+                    camera.pos.x -= looking_vector.x;
+                    camera.pos.y -= looking_vector.y;
+                    camera.pos.z -= looking_vector.z;
+                    break;
+                case SDLK_d:
+                    right_vector = (vec3_t){0.2f, 0.0f, 0.0f};
+                    right_vector = rotateY(right_vector, camera.roty);
+                    camera.pos.x += right_vector.x;
+                    camera.pos.y += right_vector.y;
+                    camera.pos.z += right_vector.z;
+                    break;
+                case SDLK_a:
+                    right_vector = (vec3_t){0.2f, 0.0f, 0.0f};
+                    right_vector = rotateY(right_vector, camera.roty);
+                    camera.pos.x -= right_vector.x;
+                    camera.pos.y -= right_vector.y;
+                    camera.pos.z -= right_vector.z;
+                    break;
+                }
+            }
+            else if (event.type == SDL_MOUSEMOTION) {
+                int dx = -event.motion.xrel;
+                int dy = event.motion.yrel;
+                camera.rotx += dy / (float)SCREEN_WIDTH;
+                camera.roty += dx / (float)SCREEN_HEIGHT;
             }
         }
-        cube c =new_cube(10,10,20,10,255,0,255,255,0,0,0);
-        cube c2 =new_cube(10,11,20,10,255,0,255,255,0,0,0);
-        draw_cube(c,window);
-        draw_cube(c2,window);
-        for(int i=0;i<20;i++){
-            for(int k=0;k<20;k++){
-                draw_cube(new_cube(i,k,10,10,255/20*i,0,255-255/20*k,255,0,0+k,0+j),window);
-            }
-        }
-
-        //ca  ca marche pas 
-        //for(int i=0;i<4;i++){
-        //    for(int u=0;i<4;u++){
-        //        for(int y=0;y<4;y++){
-        //            draw_cube(new_cube(i,u,y+10,10,0,0,255,255,0,0,0),window);
-        //        }
-        //    } 
-        //}
-        draw_cube(new_cube(0,0,10,10,0,255,0,0,0,0+k,0+j),window);
-        update_screen(window);
-        Uint32 delay=SDL_GetTicks()-t;
-        char*ti=malloc(sizeof(char)*4);
-        k+=0.01*10;
-        j+=0.0024*10;
-
-        snprintf(ti,sizeof(int32_t),"%d",(int)1000*(SDL_GetTicks()-t));
-        free(ti);
-        SDL_SetWindowTitle(window.window,ti);
+        setbackground(0, 0, 0);
+        render_object(&cube, &camera);
+        update_screen();
     }
     return 0;
 }
