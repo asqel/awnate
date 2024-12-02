@@ -9,10 +9,10 @@ ifeq ($(OS),Windows_NT)
 endif
 
 all: $(OBJ)
-	gcc $(OBJ) -o main -lSDL2 -lm -fopenmp -std=c99
+	gcc $(OBJ) -o main -lSDL2 -lm
 
 %.o: %.c
-	gcc -c $< -o $@ -Iinclude -DSDL_MAIN_HANDLED
+	gcc -c $< -o $@ -Iinclude -DSDL_MAIN_HANDLED -lSDL2 -lm
 
 run: main
 	./main
