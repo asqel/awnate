@@ -16,19 +16,25 @@ vec3_t translate(vec3_t point, vec3_t cameraPos) {
         .z = point.z - cameraPos.z};
 }
 
-void draw_mesh3d(mesh3d_t *mesh, camera_t *camera, double fov, double aspect) {
+void draw_mesh3d(mesh3d_t *mesh, camera_t *camera, double fov, double aspect, vec3_t offset, double rotx, double roty) {
 	for (uint32_t i = 0; i < mesh->edges_len; i++) {
 		u32_pair_t edge = mesh->edges[i];
 
 		if (edge.a == edge.b) continue;
 		if (edge.a >= mesh->vertices_len || edge.b >= mesh->vertices_len) continue;
 
-		vec3_t p1 = translate(mesh->vertices[edge.a], camera->pos);
-        vec3_t p2 = translate(mesh->vertices[edge.b], camera->pos);
+        vec3_t p1 = rotateX(rotateY(mesh->vertices[edge.a], roty), rotx);
+        vec3_t p2 = rotateX(rotateY(mesh->vertices[edge.b], roty), rotx);
+
+		p1 = translate(add_vec3(p1, offset), camera->pos);
+        p2 = translate(add_vec3(p2, offset), camera->pos);
+
 
         // Appliquer les rotations de la caméra
         p1 = rotateX(rotateY(p1, -camera->roty), -camera->rotx);
         p2 = rotateX(rotateY(p2, -camera->roty), -camera->rotx);
+
+
 
         if (p1.z > 0 && p2.z > 0) { // Éviter les points derrière la caméra
             vec2_t proj1 = project(p1, fov, aspect, 0.1f);
@@ -40,5 +46,11 @@ void draw_mesh3d(mesh3d_t *mesh, camera_t *camera, double fov, double aspect) {
 
 void render_object(object_t *obj, camera_t *camera) {
     SET_COLOR_FAST(obj->color.x, obj->color.y, obj->color.z);
-    draw_mesh3d(obj->mesh, camera, 200, 1);
+    draw_mesh3d(obj->mesh, camera, 200, 1, obj->pos, 0, 0);
+}
+
+void render_object_with_rot(object_t *obj, camera_t *camera, double rotx, double roty) {
+    SET_COLOR_FAST(obj->color.x, obj->color.y, obj->color.z);
+    draw_mesh3d(obj->mesh, camera, 200, 1, obj->pos, rotx, roty);
+
 }
